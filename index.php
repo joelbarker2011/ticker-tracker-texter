@@ -1,5 +1,5 @@
 <?php
-$stocks = ['VTI', 'VXUS', 'BND'];
+$stocks = ['BND', 'VTI', 'VXUS', 'VCR', 'VFH', 'VGT', 'VHT'];
 $stock = $stocks[array_rand($stocks)];
 
 list($low, $high) = getBBands($stock);
