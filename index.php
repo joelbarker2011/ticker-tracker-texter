@@ -28,7 +28,7 @@ function getBBands($stock) {
         'interval'      => 'daily',
         'time_period'   => 21,
         'series_type'   => 'close',
-        'nbdevup'       => 1,
+        'nbdevup'       => 2,
         'nbdevdn'       => 1,
         'matype'        => 1,   // EMA
         'apikey'        => $_ENV['ALPHA_VANTAGE_API_KEY'],
