@@ -1,23 +1,23 @@
 <?php
 $stocks = ['VTI', 'VXUS', 'BND'];
+$stock = $stocks[array_rand($stocks)];
 
-$alerts = [];
-foreach ($stocks as $stock) {
-    list($low, $high) = getBBands($stock);
-    $current = getCurrent($stock);
+list($low, $high) = getBBands($stock);
+$current = getCurrent($stock);
 
-    if ($current > $high) {
-        $alerts[] = "Sell $stock"; // ($current > $high)";
-    } elseif ($current < $low) {
-        $alerts[] = "Buy $stock"; // ($current < $low)";
-    }
-
-    sleep(rand(1, 10));
+if ($current > $high) {
+    $alert = "Sell $stock"; // ($current > $high)";
+} elseif ($current < $low) {
+    $alert = "Buy $stock"; // ($current < $low)";
+} else {
+    $alert = false;
 }
 
-$response = sendAlerts($alerts);
-header('Content-Type: text/plain');
-echo $response;
+if ($alert) {
+    $response = sendAlert($alert);
+    header('Content-Type: text/plain');
+    echo $response;
+}
 
 // helper functions
 
@@ -64,15 +64,13 @@ function getCurrent($stock) {
     return $latest['4. close'];
 }
 
-function sendAlerts($alerts) {
-    $message = array_join("\n", $alerts);
-
+function sendAlert($alert) {
     $ch = curl_init($_ENV['TILL_URL']);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_POST, true);
     curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode([
         'phone' => [$_ENV['RECIPIENT_PHONE']],
-        'text'  => $message,
+        'text'  => $alert,
     ]));
     $response = curl_exec($ch);
     curl_close($ch);
