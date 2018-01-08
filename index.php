@@ -6,9 +6,9 @@ list($low, $high) = getBBands($stock);
 $current = getCurrent($stock);
 
 if ($current > $high) {
-    $alert = "Sell $stock"; // ($current > $high)";
+    $alert = "Sell $stock ($current > $high)";
 } elseif ($current < $low) {
-    $alert = "Buy $stock"; // ($current < $low)";
+    $alert = "Buy $stock ($current < $low)";
 } else {
     $alert = false;
 }
