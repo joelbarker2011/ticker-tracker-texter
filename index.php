@@ -46,10 +46,11 @@ function getBBands($stock) {
 }
 
 function getCurrent($stock) {
+    $interval = '15min';
     $query = http_build_query([
         'function'      => 'TIME_SERIES_INTRADAY',
         'symbol'        => $stock,
-        'interval'      => '15min',
+        'interval'      => $interval,
         'apikey'        => $_ENV['ALPHA_VANTAGE_API_KEY'],
     ]);
 
@@ -59,7 +60,7 @@ function getCurrent($stock) {
     curl_close($ch);
 
     $json = json_decode($response, true);
-    $latest = reset($json['Time Series (15min)']);  // get first value, efficiently
+    $latest = reset($json["Time Series ($interval)"]);  // get first value, efficiently
 
     return $latest['4. close'];
 }
