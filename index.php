@@ -41,8 +41,9 @@ function getBBands($stock) {
 
     file_put_contents(strtolower($stock).'.bbands.json', $response);
 
-    $json = json_decode($response, true);
-    $latest = reset($json['Technical Analysis: BBANDS']);   // get first value, efficiently
+    $json   = json_decode($response, true);
+    $latest = $json['Meta Data']['3: Last Refreshed'];
+    $latest = $json['Technical Analysis: BBANDS'][$latest];
 
     return [$latest['Real Lower Band'], $latest['Real Upper Band']];
 }
@@ -63,8 +64,9 @@ function getCurrent($stock) {
 
     file_put_contents(strtolower($stock).'.tsi.json', $response);
 
-    $json = json_decode($response, true);
-    $latest = reset($json["Time Series ($interval)"]);  // get first value, efficiently
+    $json   = json_decode($response, true);
+    $latest = $json['Meta Data']['3. Last Refreshed'];
+    $latest = $json["Time Series ($interval)"][$latest];
 
     return $latest['4. close'];
 }
