@@ -1,13 +1,30 @@
 <?php
-$stocks = ['BND', 'VTI', 'VXUS', 'VCR', 'VFH', 'VGT', 'VHT'];
-$stock = $stocks[array_rand($stocks)];
+
+// values can be 'buy', 'sell', or 'both'
+$stocks = [
+    'BND'  => 'sell',
+    'EDV'  => 'buy',
+    'MGK'  => 'buy',
+    'VFH'  => 'sell',
+    'VGT'  => 'buy',
+    'VSS'  => 'buy',
+    'VTI'  => 'sell',
+    'VXUS' => 'sell',
+];
+$stock = array_rand($stocks);
 
 list($low, $high) = getBBands($stock);
 $current = getCurrent($stock);
 
-if ($current > $high) {
+echo "Stock: $stock\n";
+echo "Goal: $stocks[$stock]\n";
+echo "Low: $low\n";
+echo "Current: $current\n";
+echo "High: $high\n";
+
+if ($current > $high && $stocks[$stock] != 'buy') {
     $alert = "Sell $stock ($current > $high)";
-} elseif ($current < $low) {
+} elseif ($current < $low && $stocks[$stock] != 'sell') {
     $alert = "Buy $stock ($current < $low)";
 } else {
     $alert = false;
