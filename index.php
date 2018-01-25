@@ -39,6 +39,8 @@ function getBBands($stock) {
     $response = curl_exec($ch);
     curl_close($ch);
 
+    file_put_contents(strtolower($stock).'.bbands.json', $response);
+
     $json = json_decode($response, true);
     $latest = reset($json['Technical Analysis: BBANDS']);   // get first value, efficiently
 
@@ -59,6 +61,8 @@ function getCurrent($stock) {
     $response = curl_exec($ch);
     curl_close($ch);
 
+    file_put_contents(strtolower($stock).'.tsi.json', $response);
+
     $json = json_decode($response, true);
     $latest = reset($json["Time Series ($interval)"]);  // get first value, efficiently
 
@@ -66,6 +70,11 @@ function getCurrent($stock) {
 }
 
 function sendAlert($alert) {
+    if (! @$_ENV['TILL_URL'] || ! @$_ENV['RECIPIENT_PHONE']) {
+        // we can't SMS, so just echo
+        return $alert;
+    }
+
     $ch = curl_init($_ENV['TILL_URL']);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_POST, true);
