@@ -3,13 +3,18 @@
 // values can be 'buy', 'sell', or 'both'
 $stocks = [
     'BND'  => 'sell',
-    'EDV'  => 'buy',
+    'EDV'  => 'sell',
+    'VCLT' => 'buy',
+
+    'VTI'  => 'sell',
     'MGK'  => 'buy',
+
     'VFH'  => 'sell',
     'VGT'  => 'buy',
-    'VSS'  => 'buy',
-    'VTI'  => 'sell',
+
     'VXUS' => 'sell',
+    'VSS'  => 'buy',
+    'VWO'  => 'buy',
 ];
 $stock = array_rand($stocks);
 
