@@ -18,8 +18,10 @@ $stocks = [
 ];
 $stock = @$argv[1] ?: array_rand($stocks);
 
-list($low, $high) = getBBands($stock);
-$current = getCurrent($stock);
+define('MAX_ATTEMPTS', 3);
+
+list($low, $high) = attempt('getBBands', $stock);
+$current = attempt('getCurrent', $stock);
 
 echo "Stock: $stock\n";
 echo "Goal: $stocks[$stock]\n";
@@ -37,11 +39,23 @@ if ($current > $high && $stocks[$stock] != 'buy') {
 
 if ($alert) {
     $response = sendAlert($alert);
-    header('Content-Type: text/plain');
+    @header('Content-Type: text/plain');
     echo $response;
 }
 
 // helper functions
+
+function attempt($method, ...$args) {
+    for ($i = 0; $i < MAX_ATTEMPTS; ++$i) {
+        $result = $method(...$args);
+        if (isset($result)) {
+            return $result;
+        }
+        sleep(5);
+    }
+
+    throw new \Exception("Call to $method failed!");
+}
 
 function getBBands($stock) {
     $query = http_build_query([
