@@ -16,7 +16,7 @@ $stocks = [
     'VSS'  => 'buy',
     'VWO'  => 'buy',
 ];
-$stock = array_rand($stocks);
+$stock = @$argv[1] ?: array_rand($stocks);
 
 list($low, $high) = getBBands($stock);
 $current = getCurrent($stock);
