@@ -14,7 +14,7 @@ $stocks = [
 
     'VXUS' => 'sell',
     'VSS'  => 'buy',
-    'VWO'  => 'buy',
+    'VWO'  => 'sell',
 ];
 $stock = @$argv[1] ?: array_rand($stocks);
 
