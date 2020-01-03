@@ -1,21 +1,17 @@
 <?php
 
+$buy_stocks  = explode(',', $_ENV['BUY_STOCKS']);
+$sell_stocks = explode(',', $_ENV['SELL_STOCKS']);
+
 // values can be 'buy', 'sell', or 'both'
-$stocks = [
-    'BND'  => 'sell',
-    'EDV'  => 'sell',
-    'VCLT' => 'buy',
+$stocks = [];
+foreach ($buy_stocks as $stock) {
+    $stocks[$stock] = 'buy';
+}
+foreach ($sell_stocks as $stock) {
+    $stocks[$stock] = isset($stocks[$stock]) ? 'both' : 'sell';
+}
 
-    'VTI'  => 'sell',
-    'MGK'  => 'buy',
-
-    'VFH'  => 'sell',
-    'VGT'  => 'buy',
-
-    'VXUS' => 'sell',
-    'VSS'  => 'buy',
-    'VWO'  => 'sell',
-];
 $stock = @$argv[1] ?: array_rand($stocks);
 
 define('MAX_ATTEMPTS', 3);
